@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" onmouseup="{ if(window.parent.document.onmouseup) window.parent.document.onmouseup(arguments[0]);}" width="36" viewBox="0 0 36 36" id="S_Magnify_18_N_2x" height="36" data-name="S_Magnify_18_N@2x"><defs><style>
+      .fill {
+        fill: #707070;
+      }
+
+      
+    </style></defs><path data-cppathid="10000" d="M33.173,30.215,25.4,22.443A12.826,12.826,0,1,0,22.443,25.4l7.772,7.772a2.1,2.1,0,0,0,2.958-2.958ZM6,15a9,9,0,1,1,9,9A9,9,0,0,1,6,15Z" class="fill"/></svg>
