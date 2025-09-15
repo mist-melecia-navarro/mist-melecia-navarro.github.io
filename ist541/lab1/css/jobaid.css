@@ -1,0 +1,120 @@
+/* CSS Document */
+/* All comments go between the front slash and asterisk symbols */
+
+body {
+	background-color: #8AA19C;   /* background color */
+	color: #444;          /* text color for the entire page */
+  font-family: "Barlow", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+	border-color: cadetblue;
+		border
+}
+
+h1{	text-align:center;     /* centers h1 and h2 content */
+	color:#363938;
+	font-family: Barlow;
+	font-weight: 800;
+		font-size: 275%;
+}
+
+
+h2 { 
+	text-align:center;     /* centers h1 and h2 content */
+	color:antiquewhite;
+	font-family:  Monaco;
+	font-weight: 800;
+}
+h4{color:antiquewhite;
+font-family: Monaco;
+	font-weight: 400;
+}
+
+/* styles for the "wrapper" div, notice that "wrapper" is preceded by "#" */
+#wrapper {
+	width: 85%;
+	margin: 0 auto;    /* centers wrapper */
+}
+
+/* styles for the "stepTitle" class, notice that "stepTitle" is preceded by a dot */
+.stepTitle{
+	padding:10px;
+	text-align:left;
+	background-color:#F7B857;
+	font-weight: bold;
+	font-size: 185%;
+ }
+
+.stepContent{ 
+	background-color: #D9D3C2;
+	padding:5px;
+	display: flex;
+	flex-wrap:wrap;
+	justify-content: center;
+ }
+
+.stepDescription {
+	width:55%;
+	padding:3px;
+	line-height:115%;
+}
+
+.stepImage {
+	width:40%;	
+	padding:5px;
+	text-align: center;
+}
+
+.stepImage img {
+    width:70%;
+    height:auto;
+}
+
+figure {
+      display: table;
+      width: auto; /* Or a specific width */
+      margin: 0 auto; /* To center the figure */
+    }
+
+strong {
+  font-weight: 800;
+}
+
+.SourceTitle{
+	padding:8px;
+	text-align:left;
+	background-color:#69837E;
+	font-weight: bold;
+	font-size: 185%;
+ }
+
+.SourceContent{ 
+	background-color: #7D9792;
+	padding:5px;
+	display: flex;
+	flex-wrap:wrap;
+	justify-content: center;
+ }
+
+.SourceDescription {
+	width:95%;
+	padding:3px;
+	line-height:115%;
+
+/* Unvisited link */
+a:link {
+  color: darkslategray;
+}
+
+#step9 {
+  margin-bottom: 40px; /* adjust value as needed */
+}
+	
+	h4 {
+  background-color: #6E9A91* light gray, change as needed */
+  padding: 8px;             /* adds space inside the background */
+  border-radius: 8px;       /* optional: rounds the corners */
+}
+	
+	
+	
