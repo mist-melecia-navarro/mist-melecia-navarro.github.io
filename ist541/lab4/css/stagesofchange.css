@@ -1,0 +1,689 @@
+@charset "UTF-8";
+
+/* colors */
+:root {
+  --nav-bg: #CA877B;
+  --nav-hover-bg: #A95F58;
+	--activesite: #BF796f;
+  --body-bg: #E6B5A8;
+  --text: #444;
+	--display-font: "Shrikhand", cursive;
+	--fun-font: "Wedges", cursive;
+	--ui-radius: 12px;
+  --nav-h: 64px;  
+}
+
+.swap-img,
+.hero__enter,
+.stage-card { border-radius: var(--ui-radius); }
+.swap-img--wide { width: 100%; max-width: 1100px; }
+
+/* ========= BASE ========= */
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--body-bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+
+/* ========= NAVIGATION BAR ========= */
+
+
+/* Sticky top nav with your colors */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+  width: 100%;
+  background: #CA877B;          /* fallback */
+  background: var(--nav-bg);
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+
+.top-nav ul {
+  position: relative;            /* anchor for the subnav */
+  list-style: none;
+  margin: 0;
+  padding: 0.6rem 1rem;
+  display: flex;
+  justify-content: space-evenly; /* equally spaced links */
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.top-nav a {
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 600;
+  padding: 0.55rem 0.8rem;
+  border-radius: 6px;
+}
+.top-nav a:hover { 
+	background: var(--nav-hover-bg);
+	color: antiquewhite;
+}
+/* focus style to match hover */
+.top-nav a:focus-visible {
+  outline: none;
+  background: var(--nav-hover-bg);
+  color: antiquewhite;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.65) inset;
+}
+
+/* Ensure header (banner area) doesn't block sticky */
+header { height: auto; overflow: visible; background: transparent; }
+
+
+/* active nav look (tweak to taste) */
+.top-nav a.is-active {
+  background: var(--activesite);
+  text-decoration: underline;
+ color: antiquewhite;
+}
+
+
+/* ========= SUB MENU - NAVIGATION BAR ========= */
+
+
+/* ===== Modules subnav (full-width popup strip) ===== */
+/* Parent link gets a tiny dropdown arrow + a hover bridge */
+.has-submenu > a { position: relative; }
+.has-submenu > a::after { content: "▾"; margin-left: .35rem; font-size: .9em; }
+.has-submenu > a::before {   /* invisible hover bridge below the link to prevent flicker */
+  content: "";   position: absolute;   left: -8px; right: -8px;   top: 100%; height: 14px; }
+
+/* Base (hidden) state — use opacity/visibility so we can animate */
+.subnav {
+  position: absolute;
+  left: 0; right: 0;
+  top: calc(100% - 1px);    /* hug the bottom of the nav */
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;   /* compact vertical alignment */
+  gap: clamp(6px, 1.5vw, 16px);
+  padding: 0.2rem 0.75rem; /* keep compact; no bottom padding */
+  background: #BF796f;
+  box-shadow: 0 6px 12px rgba(0,0,0,.08);
+  overflow: visible;                  /* allow tooltips to overflow below */
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  pointer-events: none;   /* enable when shown */
+
+  /* slower, smooth animation */
+  transition:
+    opacity 320ms cubic-bezier(.18,.88,.25,1),
+    transform 320ms cubic-bezier(.18,.88,.25,1),
+    visibility 0s linear 320ms;    /* hide after fade completes */
+}
+
+/* Left-aligned variant (for Welcome submenu only) */
+.subnav--left {
+  justify-content: flex-start;
+  gap: clamp(8px, 2vw, 16px);
+  padding-left: 5rem;   /* lines up with your nav padding */
+  padding-right: 1rem;  /* optional, keeps breathing room on the right */
+  text-align: left;
+}
+
+
+/* Show on hover OR keyboard focus */
+.has-submenu:hover .subnav,
+.has-submenu:focus-within .subnav {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition-delay: 60ms, 60ms, 0s; /* slight intent delay */
+}
+
+/* Links inside the subnav */
+.subnav a {
+  position: relative;  /* anchor for tooltip & bridge */
+  display: inline-block;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;   /* compact click target */
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.subnav a:hover,
+.subnav a:focus-visible {
+  background: var(--nav-hover-bg);
+  outline: none;
+}
+
+/* Respect reduced motion preferences */
+@media screen and (prefers-reduced-motion: reduce) {
+  .subnav {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+
+
+/* Tooltips for subnav links using data-note */
+.subnav a[data-note] { position: relative; }
+
+/* Hidden by default — tooltip sits below the strip */
+.subnav a[data-note]::after {
+  /* text + box */
+  content: attr(data-note);
+  position: absolute;
+  left: 50%;
+  top: 100%;    /* no gap under the link */
+  transform: translateX(-50%) translateY(10px); /* visual offset below strip */
+  white-space: nowrap;
+	
+	
+	
+  background: #506D68 ; /* tooltip color you chose */
+  color: antiquewhite;
+  font-size: 1rem;
+  line-height: 1.0;
+  padding: .25rem .5rem;
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.14);
+  opacity: 0;
+  visibility: hidden;
+	transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+  z-index: 1002;                           /* above the subnav strip */
+  pointer-events: auto;
+	cursor: pointer;
+  transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+  z-index: 1002;       /* above the subnav strip */
+}
+
+
+
+/* Invisible “hover bridge” to prevent flicker between link and tooltip */
+.subnav a[data-note]::before {
+  content: "";
+  position: absolute;
+  left: -10px; right: -10px;
+  top: 100%;
+  height: 14px;                           /* covers the gap under the link */
+  pointer-events: auto;                   /* moving over this keeps :hover */
+}
+
+/* Show tooltip on hover or keyboard focus */
+.subnav a[data-note]:hover::after,
+.subnav a[data-note]:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(10px);
+  transition-delay: 40ms, 40ms, 0s;       /* slight intent delay */
+}
+
+/* CARET*/
+
+/* Touch devices: no hover — show subtitle inline under each link for clarity */
+@media (hover: none) and (pointer: coarse) {
+  .subnav a[data-note]::after,
+  .subnav a[data-note]::before { display: none; }
+
+  .subnav a[data-note] {
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 2px;
+  }
+  .subnav a[data-note]::after {
+    display: block;
+    position: static;
+    transform: none;
+    background: transparent;
+    color: var(--text);
+    opacity: .85;
+    visibility: visible;
+    padding: 0;
+    box-shadow: none;
+    white-space: normal;
+    font-size: 0.8rem;
+  }
+}
+
+/* ========= SUBNAV OPEN STATE ========= */
+
+
+/* Keep subnav open when JS adds .is-open on the parent <li> */
+.has-submenu.is-open .subnav {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition-delay: 0s, 0s, 0s;
+  z-index: 1002;
+}
+
+
+
+/* Keep long subnavs on-screen and BELOW the sticky nav on narrow viewports */
+@media (max-width: 700px) {
+  .has-submenu { position: static; }  /* let the panel escape the li */
+
+  .subnav {
+    position: fixed;                            /* attach to the viewport */
+    left: 0;
+    right: 0;
+    /* JS will set --subnav-top to the nav's bottom (viewport coords) */
+    top: var(--subnav-top, calc(var(--nav-h) + env(safe-area-inset-top, 0px)));
+    max-height: calc(
+      100svh - var(--subnav-top, var(--nav-h)) - env(safe-area-inset-bottom, 0px)
+    );
+    overflow-y: auto;
+    z-index: 999;                               /* nav stays above at 1000 */
+    flex-wrap: wrap;
+    row-gap: 6px;
+    gap: 8px 12px;
+    justify-content: flex-start;                /* left align items */
+    padding: .5rem .75rem;
+  }
+
+  /* Hide hover tooltips on touch-sized layouts */
+  .has-submenu > a::before { display: none; }
+  .subnav a[data-note]::after,
+  .subnav a[data-note]::before { display: none !important; }
+}
+
+/* Make sure nav itself is always above the panel if they overlap */
+.top-nav { z-index: 1000; }
+
+/* ========= HEADINGS ========= */
+
+
+h1 {
+  font-family: var(--display-font, "Shrikhand", cursive);
+  text-align: center;
+  font-size: clamp(2.6rem, 4.5vw + 0.5rem, 5rem);
+  line-height: 1.0;
+  letter-spacing: .5px;
+  margin: 1rem 0 .5rem;
+}
+
+h3 {
+  text-align: center;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+figcaption {
+	color: #A95F58;
+font-size: clamp(2.6rem, 4.5vw + 0.5rem, 5rem);
+}
+
+/* ========= TITLES ========= */
+
+
+.title-stack { text-align: center; margin: 1rem 0 .5rem; }
+
+.title-stack .pretitle {
+  display: block;
+  font-family: var(--display-font, "Shrikhand", cursive); /* match your H1 font */
+  font-size: clamp(1.5rem, 1.8vw + .2rem, 2.5rem);       /* smaller than H1 */
+  line-height: 1.05;
+  letter-spacing: .5px;
+  margin-bottom: .2rem;
+  color: var(--text);
+  opacity: .95; /* optional: a tiny bit softer */
+}
+
+.title-stack h1 { margin: 0; } /* remove the gap between the two lines */
+
+
+
+/* === (Optional) visually-hidden helper used by skip links === */
+.sr-only {
+  position: absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip: rect(0 0 1px 1px); white-space:nowrap; border:0;
+}
+
+
+/* ========= SECTION IMAGES BANNERS ========= */
+
+
+.section-hero {
+  position: relative;
+  width: 100vw;
+  height: clamp(140px, 28vh, 320px);
+  margin: 1rem 0;
+  margin-left: calc(50% - 50vw);   /* stretch edge-to-edge */
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Overview */
+.section-hero--overview {
+  background-image: url("../img/headeroverview.jpg"); 
+}
+
+/* Motivational Interviewing */
+.section-hero--motivationalinterviewing {
+  background-image: url("../img/headermotivationalinterviewing.jpg"); 
+}
+
+
+/* Optional centered label over the image */
+.section-hero__label {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: antiquewhite;
+  font-weight: 700;
+  text-shadow: 0 2px 6px rgba(0,0,0,.35);
+  font-size: clamp(1.1rem, 2.2vw + .3rem, 2rem);
+  padding: 0 .75rem;
+}
+
+
+
+/* ========= DIVIDERS ========= */
+
+
+.divider--full {
+  position: relative;                 /* enables overlay positioning */
+  width: 100vw;
+  height: 72px;
+  background: center / cover no-repeat url("../img/divider.jpg");
+  margin: 1.5rem 0;
+  margin-left: calc(50% - 50vw);      /* keep edge-to-edge */
+  overflow: hidden;                    /* trims any overlay bleed */
+}
+
+/* optional subtle dark veil for readability */
+.divider--full::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.25);        /* lower if too dark, e.g. .15 */
+}
+
+/* the text itself */
+.divider__label {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1;                          /* above the veil */
+  color: antiquewhite;                 /* or #fff */
+  font-weight: 700;
+    font-size: clamp(2.6rem, 4.5vw + 0.5rem, 5rem);
+  line-height: 1.0;
+  letter-spacing: .5px;
+  margin: 1rem 0 .5rem;
+  text-align: center;
+  padding: 0 .75rem;                   /* breathing room at small widths */
+  text-shadow: 0 2px 6px rgba(0,0,0,.35);
+}
+
+/* (Optional) make the label a link without layout shift */
+.divider__label a {
+  color: inherit;
+  text-decoration: none;
+  padding: .1rem .6rem;
+  border-radius: 4px;
+  transition: background-color .2s, color .2s;
+}
+.divider__label a:hover,
+.divider__label a:focus-visible {
+  background: var(--nav-hover-bg);
+  color: antiquewhite;
+  outline: none;
+}
+
+
+
+/* Make sure the nav always sits above */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;                  /* higher than the page-banner */
+  background: var(--nav-bg);      /* solid background so it’s readable */
+}
+
+/* ========= LANDING PAGE ========= */
+
+
+/* === Landing hero: therapy room + hover ENTER overlay === */
+.hero-link { display: block; text-decoration: none; color: inherit; }
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: clamp(50vh, 70vh, 90vh); /* responsive height */
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.hero__enter {
+  position: absolute;
+  inset: 0; margin: auto;
+  width: min(40vw, 340px);
+  height: auto;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity .18s ease, transform .18s ease;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,.35));
+}
+
+.hero:hover .hero__enter,
+.hero:focus-visible .hero__enter,
+.touching .hero__enter {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+/* ========= SCROLLING ========= */
+
+
+/* Smooth scrolling when clicking #links */
+html { scroll-behavior: smooth; }
+
+/* Make sure anchored sections aren’t hidden under the sticky nav */
+section {
+  scroll-margin-top: calc(var(--nav-h) + 12px);
+  padding: 1.25rem 1rem;          /* comfy spacing; tweak as you like */
+  max-width: 1100px;              /* optional content width */
+  margin: 0 auto;                 /* center content */
+}
+
+html, body { overflow-x: clip; }
+
+
+
+/* Call-to-action buttons/links */
+a.cta {
+  display: inline-block;
+  background: var(--nav-hover-bg);
+  color: antiquewhite;
+  padding: .45rem .8rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0,0,0,.12);
+  transition: transform .12s ease, box-shadow .12s ease, background-color .2s ease;
+}
+a.cta:hover,
+a.cta:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,.16);
+  outline: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ========= HOME PAGE ========= */
+
+
+.swap-box { text-align: center; margin: 1rem 0; }
+.swap-img {
+  width: min(420px, 92%);
+  height: auto;
+    box-shadow: 0 6px 16px rgba(0,0,0,.12);
+  transition: transform .15s ease;
+	display: block; margin: 0 auto;
+	border-radius: var(--ui-radius);
+}
+.swap-img:hover { transform: scale(1.01); }
+.swap-caption { opacity: .8; margin-top: .35rem; font-size: .95rem; }
+
+
+
+
+/* ========= STAGES OF CHANGE ========= */
+
+
+/* Stages of Change cards */
+.stage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem 1.25rem;
+}
+
+.stage-card {
+  background: #fff;
+  color: #444;               /* fallback */
+  color: var(--text);        /* preferred */
+  border: 1px solid rgba(0,0,0,.08);
+    padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  transition: transform .15s ease, box-shadow .15s ease;
+	border-radius: var(--ui-radius);
+}
+
+.stage-card h3 {
+  margin: 0 0 .5rem;
+  font-size: 1.05rem;
+}
+
+.stage-card p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.stage-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+}
+
+/* Thin banner under the nav on content pages */
+.room-strip {
+  width: 100%;
+}
+
+.room-strip img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Optional: a little breathing room before content */
+main { padding-top: 0.75rem; }
+
+
+
+/* ========= FOOTER ========= */
+
+.site-footer {
+  background: var(--nav-bg);
+  color: var(--text);
+  margin-top: 2rem;
+}
+
+.site-footer a {
+  display: inline-block;               /* prevents layout shift on hover */
+  padding: 0.3rem 0.9rem;
+  border-radius: 2px;
+  text-decoration: none;
+  color: var(--text);
+  transition: background-color .2s ease, color .2s ease, text-decoration-color .2s ease;
+}
+
+/* Hover/focus: lighter text and darker pill */
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  text-decoration: underline;
+  color: antiquewhite;
+  background: var(--nav-hover-bg);
+  outline: none;                       /* we’ll show a custom focus below */
+}
+
+/* High-visibility keyboard focus (optional but recommended) */
+.site-footer a:focus-visible {
+  box-shadow: 0 0 0 2px rgba(255,255,255,.9) inset;
+}
+
+/* Layout */
+.footer-top {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-brand { 
+	font-weight: 600;
+	font-family: var(--display-font);
+  letter-spacing: .3px; /* optional polish */
+}
+
+.footer-nav {
+  display: flex;
+  gap: clamp(8px, 2vw, 20px);
+  flex-wrap: wrap;
+}
+
+/* Back to top */
+.back-to-top {
+  padding: 0.3rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.14);
+  color: var(--text);
+  transition: background-color .2s ease, color .2s ease;
+}
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  background: rgba(255,255,255,0.22);
+  color: antiquewhite;
+}
+
+/* Bottom strip */
+.footer-bottom {
+  background: var(--nav-hover-bg);
+  color: antiquewhite;
+	
+  text-align: center;
+  padding: 0.3rem 1rem;
+  font-size: 1rem;
+}
+
+.byline { opacity: .85; font-weight: 600; }
