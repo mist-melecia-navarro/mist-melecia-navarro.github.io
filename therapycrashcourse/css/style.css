@@ -1,0 +1,81 @@
+:root {
+  --bg:#0f172a;
+  --card:#1f2937;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --accent:#22c55e;
+  --accent-weak:#bbf7d0;
+  --chip:#334155;
+  --focus:#93c5fd;
+}
+
+html,body { height:100%; margin:0; }
+body {
+  background:linear-gradient(180deg,#0b1224, var(--bg));
+  color:var(--text);
+  font-family:system-ui,Segoe UI,Roboto,Inter,Arial;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px;
+}
+.wrap { width:min(1100px,100%); }
+.header {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:20px; flex-wrap:wrap;
+}
+h1 { margin:0; font-size:clamp(20px,3vw,30px); }
+.subtitle { color:var(--muted); font-size:14px; }
+
+.progress {
+  display:flex; gap:10px; align-items:center;
+  background:#111827; padding:10px 14px; border-radius:14px;
+}
+.bar { flex:1; height:10px; background:#0b1327; border-radius:999px; position:relative; }
+.bar > span { position:absolute; top:0; left:0; height:100%; width:0%; background:linear-gradient(90deg, #34d399, #06b6d4); transition:width .3s ease; }
+.pct { color:var(--muted); font-size:13px; min-width:80px; }
+
+.hero { text-align:center; margin:20px 0; }
+.hero img {
+  max-width:260px;
+  border-radius:16px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.35);
+}
+
+.grid {
+  display:grid; gap:16px;
+  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+}
+.card {
+  background:var(--card);
+  border-radius:16px;
+  padding:18px;
+  border:1px solid #263248;
+}
+.card h2 { font-size:18px; margin:0 0 6px 0; }
+.desc { font-size:14px; color:var(--muted); margin-bottom:12px; }
+
+.chip {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 10px; border-radius:999px;
+  background:var(--chip); font-size:13px;
+}
+.chip[data-state="done"] {
+  background:rgba(34,197,94,.12);
+  border:1px solid var(--accent);
+  color:var(--accent-weak);
+}
+.chip button {
+  all:unset; cursor:pointer; font-size:12px;
+  padding:4px 8px; border-radius:6px;
+  background:#0b1222; color:var(--text);
+}
+.footer {
+  margin-top:20px; font-size:13px; color:var(--muted);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.reset {
+  all:unset; cursor:pointer; padding:6px 12px;
+  border-radius:8px; border:1px solid #7f1d1d;
+  color:#fca5a5;
+}
+.reset:focus-visible { outline:2px solid var(--focus); outline-offset:3px; }
+

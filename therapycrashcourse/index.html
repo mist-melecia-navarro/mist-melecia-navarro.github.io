@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Therapy Crash Course — Module Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+  <main class="wrap" aria-labelledby="appTitle">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="title">
+        <h1 id="appTitle">Therapy Crash Course — Module Hub</h1>
+        <div class="subtitle">Complete the tiles below. Your progress saves in this browser.</div>
+      </div>
+      <div class="progress" role="region" aria-label="Course progress">
+        <div class="bar" aria-hidden="true"><span id="barFill"></span></div>
+        <div class="pct" id="pctLabel" aria-live="polite">0% • 0/4</div>
+      </div>
+    </div>
+
+    <!-- Hero image -->
+    <div class="hero">
+      <img src="main-image.png" alt="Therapy Crash Course main image">
+    </div>
+
+    <!-- Grid of modules -->
+    <section class="grid" aria-label="Module tiles">
+      <!-- Tile 1 -->
+      <article class="card" data-id="m1">
+        <h2>Module 1 · What Is Therapy?</h2>
+        <p class="desc">Define therapy in client-friendly language; set expectations; therapist role.</p>
+        <div class="chip" id="chip-m1" aria-live="polite" data-state="todo">
+          <span id="chipText-m1">Not started</span>
+          <button type="button" class="markBtn" data-target="m1">Mark done</button>
+        </div>
+      </article>
+
+      <!-- Tile 2 -->
+      <article class="card" data-id="m2">
+        <h2>Module 2 · Stages of Change</h2>
+        <p class="desc">Identify client readiness; practice mapping language to stages.</p>
+        <div class="chip" id="chip-m2" aria-live="polite" data-state="todo">
+          <span id="chipText-m2">Not started</span>
+          <button type="button" class="markBtn" data-target="m2">Mark done</button>
+        </div>
+      </article>
+
+      <!-- Tile 3 -->
+      <article class="card" data-id="m3">
+        <h2>Module 3 · MI: Engage → Focus → Evoke</h2>
+        <p class="desc">Apply OARS; spot “change talk”; practice branching dialogue.</p>
+        <div class="chip" id="chip-m3" aria-live="polite" data-state="todo">
+          <span id="chipText-m3">Not started</span>
+          <button type="button" class="markBtn" data-target="m3">Mark done</button>
+        </div>
+      </article>
+
+      <!-- Tile 4 -->
+      <article class="card" data-id="m4">
+        <h2>Module 4 · Drafting a Goal</h2>
+        <p class="desc">Draft a client-centered goal aligned with readiness and MI insights.</p>
+        <div class="chip" id="chip-m4" aria-live="polite" data-state="todo">
+          <span id="chipText-m4">Not started</span>
+          <button type="button" class="markBtn" data-target="m4">Mark done</button>
+        </div>
+      </article>
+    </section>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div>Tip: Your progress is stored locally in this browser.</div>
+      <button class="reset" id="resetBtn" aria-label="Reset saved progress">Reset progress</button>
+    </div>
+  </main>
+
+	<script src="script.js"></script>
+</body>
+</html>
