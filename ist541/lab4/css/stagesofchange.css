@@ -885,7 +885,7 @@ align-content: center;
 	display: block;
   width: 360px;
   height: auto;
-  max-height: 360px;         /* cap height so tall images don’t dominate */
+  max-height: 360px;         /* cap height so  tall images don’t dominate */
   object-fit: contain;       /* keep full image visible inside the box */
   border-radius: var(--ui-radius);
   box-shadow: 0 6px 16px rgba(0,0,0,.85);
@@ -934,7 +934,93 @@ align-content: center;
 #tq-stage.stage-pill { display: table; margin: 0 auto .5rem; }
 
 
+/* Layout for the choices */
+.tg-choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  align-items: stretch;                 /* stretch items to equal height per row */
+}
 
+/* Style the choice buttons (“pills”)  */
+.tg-pill,
+.quiz-card {                            /* include your older class just in case */
+  appearance: none;
+  -webkit-appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  /* This height is the key: ensures consistent size; JS below will equalize too */
+  min-height: 64px;
+
+  padding: 0.9rem 1.1rem;
+  border-radius: 9999px;                /* pill shape */
+  border: 2px solid transparent;
+  background: #fff;
+  color: var(--text);
+  text-align: center;
+
+  font-weight: 800;
+  font-size: clamp(1.05rem, 0.9vw + .75rem, 1.25rem);  /* bigger text */
+  line-height: 1.35;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .2s ease, background-color .2s ease;
+}
+
+.tg-pill:hover,
+.tg-pill:focus-visible,
+.quiz-card:hover,
+.quiz-card:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+  outline: none;
+  background: color-mix(in srgb, var(--nav-bg) 8%, white);
+}
+
+/* Correct / wrong states (keeps your existing colors) */
+.tg-pill.is-correct,
+.quiz-card.is-correct {
+  border-color: var(--ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 25%, transparent);
+}
+
+.tg-pill.is-wrong,
+.quiz-card.is-wrong {
+  border-color: var(--no);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--no) 25%, transparent);
+}
+
+/* Optional: make selected feel pressed */
+.tg-pill[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--nav-bg) 12%, white);
+}
+
+/* Mobile: a tad tighter if needed */
+@media (max-width: 420px) {
+  .tg-pill,
+  .quiz-card {
+    min-height: 56px;
+    font-size: clamp(1rem, 3.5vw, 1.15rem);
+  }
+}
+
+
+/* More space between the pills */
+.tg-choices {
+  /* bigger row + column spacing, responsive */
+  column-gap: clamp(16px, 2.2vw, 28px);
+  row-gap: clamp(19px, 2.6vw, 32px);
+  padding-block: .25rem; /* a little breathing room above/below */
+}
+
+/* (optional) a touch more padding on each pill so the extra space feels balanced */
+.tg-pill,
+.quiz-card {
+  padding: 1rem 1.2rem;     /* was 0.9rem 1.1rem */
+}
 
 
 /* === Module 3: DARN-CAT media cards === */
@@ -1037,7 +1123,7 @@ align-content: center;
   flex-wrap: wrap;
   line-height: 1.1;
 }
-.mi-summary-title { font-weight: 800; } /* inherits the big size */
+.mi-summary-title { font-weight: 800; } /* inherits  the big size */
 .mi-summary-sub {/* the “small title” / tagline */
   font-weight: 600;
   opacity: .95; /* readable but smaller than the main line */

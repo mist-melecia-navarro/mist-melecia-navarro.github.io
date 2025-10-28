@@ -723,3 +723,29 @@ document.addEventListener('DOMContentLoaded', () => {
   elNext.addEventListener('click', newQuestion);
   newQuestion();
 })();
+
+// Equalize pill heights so they look consistent even with different text lengths
+(function equalizeTgPills() {
+  const grids = document.querySelectorAll('.tg-choices');
+  if (!grids.length) return;
+
+  const run = () => {
+    grids.forEach(grid => {
+      const pills = grid.querySelectorAll('.tg-pill, .quiz-card');
+      if (!pills.length) return;
+      // reset
+      pills.forEach(p => { p.style.minHeight = ''; });
+      // measure tallest
+      let max = 0;
+      pills.forEach(p => { max = Math.max(max, p.offsetHeight); });
+      // apply
+      pills.forEach(p => { p.style.minHeight = max + 'px'; });
+    });
+  };
+
+  // initial + on resize/content changes
+  run();
+  const ro = new ResizeObserver(run);
+  grids.forEach(g => ro.observe(g));
+  window.addEventListener('resize', run, { passive: true });
+})();
