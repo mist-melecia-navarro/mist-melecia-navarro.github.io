@@ -198,3 +198,528 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', setSubnavTop);
   window.addEventListener('scroll', setSubnavTop, { passive: true });
 })();
+
+/* Click-to-check quiz for stage cards */
+(function quizCards(){
+  document.querySelectorAll('.js-quiz').forEach(block => {
+    const allow = (block.dataset.allow || 'single').toLowerCase();
+    const cards = Array.from(block.querySelectorAll('.stage-card--image'));
+    const feedback = block.querySelector('.quiz-feedback');
+    const resetBtn = block.querySelector('.quiz-reset');
+
+    function reset() {
+      block.classList.remove('has-picked');
+      cards.forEach(c => {
+        c.classList.remove('is-correct','is-wrong','is-selected');
+        c.removeAttribute('aria-pressed');
+      });
+      if (feedback) feedback.textContent = '';
+    }
+
+    block.addEventListener('click', (e) => {
+      const card = e.target.closest('.stage-card--image');
+      if (!card || !block.contains(card)) return;
+
+      // Prevent navigation while in quiz mode
+      e.preventDefault();
+
+      const isRight = card.dataset.correct === 'true';
+
+      if (allow === 'single') {
+        cards.forEach(c => c.classList.remove('is-correct','is-wrong','is-selected'));
+      }
+      card.classList.add(isRight ? 'is-correct' : 'is-wrong', 'is-selected');
+      card.setAttribute('aria-pressed', 'true');
+
+      block.classList.add('has-picked');
+      if (feedback) feedback.textContent = isRight ? 'Nice! That’s correct.' : 'Not quite — try again.';
+    });
+
+    if (resetBtn) resetBtn.addEventListener('click', reset);
+  });
+})();
+
+/* -------- Flip-to-reveal (explore) -------- */
+(function flipCards(){
+  document.querySelectorAll('.js-flipgrid').forEach(grid => {
+    const exclusive = (grid.dataset.exclusive || '').toLowerCase() === 'true';
+
+    grid.addEventListener('click', e => {
+      const btn = e.target.closest('.sc-btn');
+      if (!btn || !grid.contains(btn)) return;
+      e.preventDefault();
+
+      if (exclusive) {
+        grid.querySelectorAll('.sc-btn.is-flipped').forEach(other => {
+          if (other !== btn) {
+            other.classList.remove('is-flipped');
+            other.setAttribute('aria-expanded','false');
+          }
+        });
+      }
+      const nowOn = btn.classList.toggle('is-flipped');
+      btn.setAttribute('aria-expanded', nowOn ? 'true' : 'false');
+    });
+
+    // keyboard support
+    grid.addEventListener('keydown', e => {
+      const btn = e.target.closest('.sc-btn');
+      if (!btn) return;
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+      if (e.key === 'Escape') { btn.classList.remove('is-flipped'); btn.setAttribute('aria-expanded','false'); }
+    });
+  });
+
+  // click outside closes all
+  document.addEventListener('click', e => {
+    document.querySelectorAll('.js-flipgrid').forEach(grid => {
+      if (!grid.contains(e.target)) {
+        grid.querySelectorAll('.sc-btn.is-flipped').forEach(btn => {
+          btn.classList.remove('is-flipped');
+          btn.setAttribute('aria-expanded','false');
+        });
+      }
+    });
+  }, { passive: true });
+})();
+
+/* -------- Quiz interactions -------- */
+(function quizCards(){
+  document.querySelectorAll('.js-quiz').forEach(quiz => {
+    const exclusive = (quiz.dataset.exclusive || '').toLowerCase() === 'true';
+    const feedbackEl = quiz.parentElement.querySelector('.quiz-feedback');
+
+    function clearAll() {
+      quiz.querySelectorAll('.quiz-card').forEach(c => c.classList.remove('is-correct','is-wrong'));
+      if (feedbackEl) feedbackEl.textContent = '';
+    }
+
+    quiz.addEventListener('click', e => {
+      const card = e.target.closest('.quiz-card');
+      if (!card || !quiz.contains(card)) return;
+      if (exclusive) {
+        quiz.querySelectorAll('.quiz-card').forEach(c => { if (c !== card) c.classList.remove('is-correct','is-wrong'); });
+      }
+      const correct = (card.dataset.correct || 'false') === 'true';
+      card.classList.toggle('is-correct', correct);
+      card.classList.toggle('is-wrong', !correct);
+      if (feedbackEl) feedbackEl.textContent = correct ? '✅ Correct!' : '❌ Try again.';
+    });
+
+    const resetBtn = quiz.parentElement.querySelector('.quiz-reset');
+    if (resetBtn) resetBtn.addEventListener('click', clearAll);
+  });
+})();
+
+
+  // Flip cards: click/tap toggles, button semantics handle keyboard
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.stage-card--flip').forEach(card => {
+      // If it's not a <button>, make it behave like one
+      if (card.tagName !== 'BUTTON') {
+        card.setAttribute('role','button');
+        card.tabIndex = card.tabIndex >= 0 ? card.tabIndex : 0;
+      }
+      card.addEventListener('click', () => {
+        const on = card.classList.toggle('is-flipped');
+        card.setAttribute('aria-expanded', String(on));
+      });
+    });
+  });
+
+// --- Random Scenario Image Quiz ---------------------------------------------
+(function initRandomScenarioQuiz(){
+  const root = document.querySelector('.js-random-quiz');
+  if (!root) return;
+
+  // TODO: Adjust file names to match your actual images
+  // You told me your files are named like:
+  // 1precontemplation.jpg, 2contemplation.jpg, 3plan.jpg, 4action.jpg, 5maintenance.jpg, 6relapse.jpg
+  // For "Preparation" you said the file is "3plan.jpg".
+  const SCENARIOS = [
+    { stage:'Precontemplation', img:'img/1precontemplation.jpg', alt:'Precontemplation', caption:'Not yet acknowledging a problem; low/no intent to change.' },
+    { stage:'Contemplation',    img:'img/2contemplation.jpg',    alt:'Contemplation',    caption:'Ambivalence; weighing pros/cons; “maybe someday.”' },
+    { stage:'Preparation',      img:'img/3plan.jpg',             alt:'Preparation',      caption:'Intention to act; making small steps and gathering resources.' },
+    { stage:'Action',           img:'img/4action.jpg',           alt:'Action',           caption:'Visible behavior change within the last 6 months.' },
+    { stage:'Maintenance',      img:'img/5maintenance.jpg',      alt:'Maintenance',      caption:'Sustaining change; preventing relapse and building routines.' },
+    { stage:'Relapse',          img:'img/6relapse.jpg',          alt:'Relapse', caption:'Returning to prior behavior; reflect, learn, and re-engage.' }
+  ];
+
+  // DOM
+  const imgEl      = root.querySelector('.image-quiz__img');
+  const capEl      = root.querySelector('.image-quiz__caption');
+  const btns       = Array.from(root.querySelectorAll('.quiz-card'));
+  const btnNext    = root.querySelector('.quiz-next');
+  const btnReset   = root.querySelector('.quiz-reset');
+  const feedbackEl = root.querySelector('.quiz-feedback');
+  const scoreEl    = root.querySelector('.quiz-score');
+
+  // State
+  let order = [];
+  let index = 0;
+  let picked = false;
+  let correctCount = 0;
+
+  function shuffle(arr){
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = (Math.random() * (i + 1)) | 0;
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function newOrder(){
+    order = shuffle([...SCENARIOS.keys()]);
+    index = 0; correctCount = 0;
+  }
+
+  function showScore(){
+    scoreEl.textContent = `Score: ${correctCount} / ${index} ${index ? `(${Math.round((correctCount/index)*100)}%)` : ''}`;
+  }
+
+  function loadScenario(){
+    const s = SCENARIOS[ order[index] ];
+    // reset button states
+    btns.forEach(b => b.classList.remove('is-correct','is-wrong'));
+    // set image/caption
+    imgEl.src = s.img;
+    imgEl.alt = s.alt;
+    capEl.textContent = s.caption || '';
+    imgEl.hidden = false;
+
+    // start in preview state (65% opacity) until a pick is made
+    imgEl.classList.add('is-visible','is-preview');
+    imgEl.classList.remove('is-correct','is-wrong');
+
+    feedbackEl.textContent = '';
+    btnNext.disabled = true;
+    picked = false;
+    showScore();
+  }
+
+  function lockButtons(){
+    btns.forEach(b => b.disabled = true);
+  }
+  function unlockButtons(){
+    btns.forEach(b => b.disabled = false);
+  }
+
+  // Hover preview (keeps image at 65% until answered)
+  btns.forEach(b => {
+    b.addEventListener('mouseenter', () => {
+      if (!picked) {
+        imgEl.classList.add('is-preview');
+        imgEl.classList.remove('is-correct','is-wrong');
+      }
+    });
+    b.addEventListener('mouseleave', () => {
+      // keep preview while unanswered
+      if (!picked) imgEl.classList.add('is-preview');
+    });
+  });
+
+  // Click to answer
+  btns.forEach(b => {
+    b.addEventListener('click', () => {
+      if (picked) return; // ignore extra clicks after selection
+
+      const answer = b.getAttribute('data-stage');
+      const s = SCENARIOS[ order[index] ];
+      picked = true;
+
+      // remove preview effect and mark result
+      imgEl.classList.remove('is-preview');
+      unlockButtons(); // ensure buttons enabled to show styles
+      lockButtons();   // then lock after pick
+
+      if (answer === s.stage) {
+        b.classList.add('is-correct');
+        imgEl.classList.add('is-correct');
+        feedbackEl.textContent = 'Correct!';
+        correctCount++;
+      } else {
+        b.classList.add('is-wrong');
+        imgEl.classList.add('is-wrong');
+        feedbackEl.textContent = `Not quite — this was ${s.stage}.`;
+      }
+
+      btnNext.disabled = false;
+      index++;
+      showScore();
+    });
+  });
+
+  // Next scenario
+  btnNext.addEventListener('click', () => {
+    if (index >= order.length) {
+      feedbackEl.textContent = 'You’ve seen all scenarios. Press Reset to play again.';
+      btnNext.disabled = true;
+      return;
+    }
+    unlockButtons();
+    loadScenario();
+  });
+
+  // Reset
+  btnReset.addEventListener('click', () => {
+    newOrder();
+    unlockButtons();
+    loadScenario();
+  });
+
+  // init
+  newOrder();
+  loadScenario();
+})();
+
+// === Stage-of-Change: Goal Matching Quiz ===============================
+(() => {
+  const elPrompt  = document.getElementById('tq-prompt');
+  const elStage   = document.getElementById('tq-stage');
+  const elOptions = document.getElementById('tq-options');
+  const elNext    = document.getElementById('tq-next');
+  const elFB      = document.getElementById('tq-feedback');
+  const elScore   = document.getElementById('tq-score');
+
+  if (!elPrompt || !elOptions || !elNext) return; // quiz not on this page
+
+  // Bank: one “signature” goal per stage (concise, teachable)
+  const BANK = [
+    {
+      stage: 'Precontemplation',
+      goal: 'Build rapport and increase awareness of impact; invite reflection — not action.',
+    },
+    {
+      stage: 'Contemplation',
+      goal: 'Resolve ambivalence by exploring pros/cons; tip toward change with discrepancy.',
+    },
+    {
+      stage: 'Preparation',
+      goal: 'Co-create a concrete plan (what/when/how), identify supports, set a start date.',
+    },
+    {
+      stage: 'Action',
+      goal: 'Implement skills/strategies, troubleshoot barriers, reinforce small wins.',
+    },
+    {
+      stage: 'Maintenance',
+      goal: 'Prevent relapse: strengthen routines, coping plans, and support systems.',
+    },
+    {
+      stage: 'Relapse / Recycling',
+      goal: 'Normalize lapse, analyze triggers, revise the plan, and re-engage supports.',
+    },
+  ];
+
+  // Utility
+  const randInt = n => Math.floor(Math.random() * n);
+  const shuffle = (arr) => {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = randInt(i + 1);
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
+  let score = 0, total = 0, current = null, locked = false;
+
+  function newQuestion() {
+    locked = false;
+    elFB.textContent = '';
+
+    // Pick a correct stage
+    const correct = BANK[randInt(BANK.length)];
+
+    // Build options: include correct + 3 distractors from other stages
+    const distractors = shuffle(BANK.filter(b => b.stage !== correct.stage)).slice(0, 3);
+    const opts = shuffle([correct, ...distractors]);
+
+    current = {
+      stage: correct.stage,
+      correctGoal: correct.goal,
+      options: opts
+    };
+
+    // Render prompt + stage pill
+    elPrompt.textContent = `Which treatment goal best matches this stage?`;
+    elStage.textContent = current.stage;
+
+    // Render options
+    elOptions.innerHTML = '';
+    opts.forEach((o, idx) => {
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'quiz-card';
+      card.setAttribute('role', 'listitem');
+      card.dataset.correct = (o.goal === current.correctGoal) ? '1' : '0';
+      card.innerHTML = `<p>${o.goal}</p>`;
+      card.addEventListener('click', () => handlePick(card));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+      });
+      elOptions.appendChild(card);
+    });
+
+    // Update score line
+    elScore.textContent = total ? `Score: ${score}/${total}` : '';
+  }
+
+  function handlePick(card) {
+    if (locked) return;
+    locked = true;
+    total++;
+
+    // Mark everything; highlight correct/incorrect like your photo quiz
+    const cards = Array.from(elOptions.querySelectorAll('.quiz-card'));
+    const isCorrect = card.dataset.correct === '1';
+
+    cards.forEach(c => {
+      const correct = c.dataset.correct === '1';
+      c.classList.remove('is-correct', 'is-wrong');
+      c.classList.add(correct ? 'is-correct' : 'is-wrong');
+      c.disabled = true;
+    });
+
+    if (isCorrect) {
+      score++;
+      elFB.textContent = '✔ Correct!';
+    } else {
+      elFB.textContent = '✖ Not quite — review the stage’s goal above.';
+    }
+
+    elScore.textContent = `Score: ${score}/${total}`;
+  }
+
+  elNext.addEventListener('click', newQuestion);
+
+  // Start the first question
+  newQuestion();
+})();
+
+// === Stage-of-Change: Goal Matching Quiz (definition + scenario mix) ===
+(() => {
+  const elPrompt  = document.getElementById('tq-prompt');
+  const elStage   = document.getElementById('tq-stage');
+  const elOptions = document.getElementById('tq-options');
+  const elNext    = document.getElementById('tq-next');
+  const elFB      = document.getElementById('tq-feedback');
+  const elScore   = document.getElementById('tq-score');
+
+  if (!elPrompt || !elOptions || !elNext) return; // quiz not on this page
+
+  // ---- Keep your original bank (definitions) + add scenario-style therapist goals
+  const BANK = [
+    {
+      stage: 'Precontemplation',
+      defn:  'Build rapport and increase awareness of impact; invite reflection — not action.',
+      scen:  'Client will increase awareness of alcohol-related impacts by completing two brief reflection journals per week and discussing at least one personal consequence in session.'
+    },
+    {
+      stage: 'Contemplation',
+      defn:  'Resolve ambivalence by exploring pros/cons; tip toward change with discrepancy.',
+      scen:  'Client will prepare a decisional balance for anger outbursts (≥3 pros, ≥3 cons) and identify two personal values that conflict with “blowing up,” to be reviewed in session.'
+    },
+    {
+      stage: 'Preparation',
+      defn:  'Co-create a concrete plan (what/when/how), identify supports, set a start date.',
+      scen:  'Client will co-create a morning-routine plan (two alarms, pack bag at night, lay out clothes), choose a start date within 7 days, and identify one accountability partner.'
+    },
+    {
+      stage: 'Action',
+      defn:  'Implement skills/strategies, troubleshoot barriers, reinforce small wins.',
+      scen:  'Client will reduce cannabis use from 7 to ≤3 days/week for 4 consecutive weeks, track urges daily, and practice two coping skills (e.g., 4-7-8 breathing, 10-min walk) during cravings.'
+    },
+    {
+      stage: 'Maintenance',
+      defn:  'Prevent relapse: strengthen routines, coping plans, and support systems.',
+      scen:  'Client will maintain daily hygiene (shower + teeth brushing) ≥5 days/week for 8 weeks using a checklist and a weekly self-reward when the goal is met.'
+    },
+    {
+      stage: 'Relapse / Recycling',
+      defn:  'Normalize lapse, analyze triggers, revise the plan, and re-engage supports.',
+      scen:  'Following any binge episode, client will complete a lapse analysis within 48 hours, identify ≥2 triggers, update the meal plan with one replacement strategy, and schedule a support check-in.'
+    },
+  ];
+
+  // Build two parallel item lists
+  const DEFN_ITEMS = BANK.map(b => ({ stage: b.stage, goal: b.defn, kind: 'defn' }));
+  const SCEN_ITEMS = BANK.map(b => ({ stage: b.stage, goal: b.scen, kind: 'scen' }));
+
+  // Utils
+  const randInt = n => Math.floor(Math.random() * n);
+  const shuffle = (arr) => {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = randInt(i + 1);
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
+  let score = 0, total = 0, locked = false;
+
+  function newQuestion() {
+    locked = false;
+    elFB.textContent = '';
+
+    // Randomly choose definition or scenario (50/50)
+    const useScenario = Math.random() < 0.5;
+    const SOURCE = useScenario ? SCEN_ITEMS : DEFN_ITEMS;
+
+    // Pick one correct item + 3 distractors of the same type (from other stages)
+    const correct = SOURCE[randInt(SOURCE.length)];
+    const distractors = shuffle(SOURCE.filter(i => i.stage !== correct.stage)).slice(0, 3);
+    const options = shuffle([correct, ...distractors]);
+
+    // Render prompt + stage name
+    elPrompt.textContent = 'Which treatment goal best matches this stage?';
+    elStage.textContent = correct.stage;
+
+    // Render options
+    elOptions.innerHTML = '';
+    options.forEach(o => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'quiz-card';
+      btn.setAttribute('role', 'listitem');
+      btn.dataset.correct = (o.goal === correct.goal) ? '1' : '0';
+      btn.innerHTML = `<p>${o.goal}</p>`;
+      btn.addEventListener('click', () => handlePick(btn));
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+      });
+      elOptions.appendChild(btn);
+    });
+
+    // Update score display
+    elScore.textContent = total ? `Score: ${score}/${total}` : '';
+  }
+
+  function handlePick(btn) {
+    if (locked) return;
+    locked = true;
+    total++;
+
+    const cards = Array.from(elOptions.querySelectorAll('.quiz-card'));
+    const isCorrect = btn.dataset.correct === '1';
+
+    cards.forEach(c => {
+      const good = c.dataset.correct === '1';
+      c.classList.toggle('is-correct', good);
+      c.classList.toggle('is-wrong', !good);
+      c.disabled = true;
+    });
+
+    if (isCorrect) {
+      score++;
+      elFB.textContent = '✔ Correct!';
+    } else {
+      elFB.textContent = '✖ Not quite — compare how the goal fits this stage.';
+    }
+    elScore.textContent = `Score: ${score}/${total}`;
+  }
+
+  elNext.addEventListener('click', newQuestion);
+  newQuestion();
+})();

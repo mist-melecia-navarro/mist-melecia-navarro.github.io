@@ -10,12 +10,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Therapy Crash Course</title>
 <meta name="author" content="Melecia Navarro, MSW">
+	<meta name="description" content="Landing page for the Therapy Crash Course Companion Site. Sets the mood with a therapy room image and a single Enter button leading into the experience."/>
+
 
 	<!--  ========= STYLE SHEET ========= -->
 	<link rel="stylesheet" href="css/stagesofchange.css" />
 	
 	<!--  ========= PRELOAD IMAGE ========= -->
 	<link rel="preload" as="image" href="img/enter.jpg">
+	<link rel="preload" as="image" href="img/therapyroom.jpg">
 	
 	<!--  ========= FONTS ========= -->
 			<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,15 +36,15 @@
 <!--  ========= BODY - BODY - BODY ========= -->
 	
 <body>
-
-
+ 
+	
+<a class="sr-only" href="#home">Skip to content</a>
 <!--  ========= DIV CLASS - WRAPPER - DIV CLASS ========= -->	
 	<div class="container">
-		
-  <main>
 <!-- BODY (just the two headings for now) -->
 <main id="home">
 <h1>Therapy Crash Course</h1>
+	<h2 class="sr-only">Landing</h2>
 <h3>Are you ready?</h3>
 	
 <!-- Landing hero: therapy room with hover ENTER overlay -->
@@ -51,11 +54,8 @@
     <img class="hero__enter" src="img/enter.jpg" alt="" aria-hidden="true">
   </div>
 </a>
-
-
-<!-- We'll add the big therapy room image + hover ENTER in a later step -->
 </main>
-</body>
+
 	
 		
 		  <!--  ========= FOOTER ========= -->
@@ -67,5 +67,6 @@
     <small>© <span id="year"></span> Therapy Crash Course · <span class="byline">Melecia Navarro, MSW</span></small>
   </div>
 </footer>
-	
+		</div>
+	</body>
 </html>

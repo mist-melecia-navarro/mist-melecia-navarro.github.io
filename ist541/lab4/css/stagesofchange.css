@@ -6,11 +6,15 @@
   --nav-hover-bg: #A95F58;
 	--activesite: #BF796f;
   --body-bg: #E6B5A8;
+	--grey:#b19e9b;
   --text: #444;
 	--display-font: "Shrikhand", cursive;
 	--fun-font: "Wedges", cursive;
 	--ui-radius: 12px;
-  --nav-h: 64px;  
+  --nav-h: 64px;
+	  /* add gentle success/error colors */
+  --ok: #2e7d32;   /* green */
+  --no: #c62828;   /* red */
 }
 
 .swap-img,
@@ -21,7 +25,7 @@
 /* ========= BASE ========= */
 html, body { height: 100%; }
 body {
-  margin: 0;
+  margin: 0.5px;
   background: var(--body-bg);
   color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -171,6 +175,7 @@ header { height: auto; overflow: visible; background: transparent; }
 /* Tooltips for subnav links using data-note */
 .subnav a[data-note] { position: relative; }
 
+
 /* Hidden by default — tooltip sits below the strip */
 .subnav a[data-note]::after {
   /* text + box */
@@ -180,10 +185,7 @@ header { height: auto; overflow: visible; background: transparent; }
   top: 100%;    /* no gap under the link */
   transform: translateX(-50%) translateY(10px); /* visual offset below strip */
   white-space: nowrap;
-	
-	
-	
-  background: #506D68 ; /* tooltip color you chose */
+	  background: #506D68 ; /* tooltip color you chose */
   color: antiquewhite;
   font-size: 1rem;
   line-height: 1.0;
@@ -291,8 +293,7 @@ header { height: auto; overflow: visible; background: transparent; }
   .subnav a[data-note]::before { display: none !important; }
 }
 
-/* Make sure nav itself is always above the panel if they overlap */
-.top-nav { z-index: 1000; }
+
 
 /* ========= HEADINGS ========= */
 
@@ -305,12 +306,14 @@ h1 {
   letter-spacing: .5px;
   margin: 1rem 0 .5rem;
 }
+h2{text-align: center}
 
 h3 {
   text-align: center;
   margin: 0 0 1rem;
   font-weight: 600;
 }
+h4{font-size: 120%}
 
 figcaption {
 	color: #A95F58;
@@ -361,7 +364,7 @@ font-size: clamp(2.6rem, 4.5vw + 0.5rem, 5rem);
 
 /* Overview */
 .section-hero--overview {
-  background-image: url("../img/headeroverview.jpg"); 
+  background-image: url("../img/headeroverview.jpg");
 }
 
 /* Motivational Interviewing */
@@ -391,7 +394,7 @@ font-size: clamp(2.6rem, 4.5vw + 0.5rem, 5rem);
   width: 100vw;
   height: 72px;
   background: center / cover no-repeat url("../img/divider.jpg");
-  margin: 1.5rem 0;
+  margin: 1rem 0;
   margin-left: calc(50% - 50vw);      /* keep edge-to-edge */
   overflow: hidden;                    /* trims any overlay bleed */
 }
@@ -400,7 +403,7 @@ font-size: clamp(2.6rem, 4.5vw + 0.5rem, 5rem);
 .divider--full::after {
   content: "";
   position: absolute; inset: 0;
-  background: rgba(0,0,0,.25);        /* lower if too dark, e.g. .15 */
+  background: rgba(0,0,0,.35);        /* lower if too dark, e.g. .15 */
 }
 
 /* the text itself */
@@ -408,7 +411,7 @@ font-size: clamp(2.6rem, 4.5vw + 0.5rem, 5rem);
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
   z-index: 1;                          /* above the veil */
-  color: antiquewhite;                 /* or #fff */
+  color: #fff;                 /* or #fff */
   font-weight: 700;
     font-size: clamp(2.6rem, 4.5vw + 0.5rem, 5rem);
   line-height: 1.0;
@@ -435,14 +438,7 @@ font-size: clamp(2.6rem, 4.5vw + 0.5rem, 5rem);
 }
 
 
-
-/* Make sure the nav always sits above */
-.top-nav {
-  position: sticky;
-  top: 0;
-  z-index: 1000;                  /* higher than the page-banner */
-  background: var(--nav-bg);      /* solid background so it’s readable */
-}
+.divider--inset { height: 16px; }
 
 /* ========= LANDING PAGE ========= */
 
@@ -555,6 +551,7 @@ a.cta:focus-visible {
 /* ========= STAGES OF CHANGE ========= */
 
 
+
 /* Stages of Change cards */
 .stage-grid {
   display: grid;
@@ -591,6 +588,599 @@ a.cta:focus-visible {
   box-shadow: 0 6px 14px rgba(0,0,0,.12);
 }
 
+
+
+
+
+/* Card grid variant */
+.stage-grid--cards {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* Clickable image card */
+.stage-card--image {
+  position: relative;
+  display: block;            /* make the whole card clickable */
+  padding: 0;                /* override padded text-card look */
+  overflow: hidden;
+  border-radius: var(--ui-radius, 12px);
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  aspect-ratio: 32 / 32;      /* consistent tile shape */
+  background: #fff;
+  text-decoration: none;     /* remove underline on label */
+/* make room for a visible ring without shifting layout */
+  border: 2px solid transparent;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .15s ease;
+}
+
+/* Image fills the card */
+.stage-card--image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .25s ease;
+}
+
+/* Subtle overlay gradient for label readability */
+.stage-card--image::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.35), rgba(0,0,0,0));
+  pointer-events: none;
+}
+
+/* Label over the image */
+.stage-card__label {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: .25rem .55rem;
+  border-radius: 6px;
+  font-weight: 700;
+  color: antiquewhite;
+  background: color-mix(in srgb, var(--nav-bg) 82%, transparent);
+  /* if color-mix isn't supported, fallback */
+  background: rgba(202, 135, 123, 0.82);
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+
+/* Hover/focus effect */
+.stage-card--image:hover img,
+.stage-card--image:focus-visible img {
+  transform: scale(1.03);
+}
+.stage-card--image:hover .stage-card__label,
+.stage-card--image:focus-visible .stage-card__label {
+  background: var(--nav-hover-bg);
+  outline: none;
+}
+
+
+/* --- Flip add-on for image cards --- */
+.stage-card--flip {
+  position: relative;
+  perspective: 1000px;              /* 3D flip */
+}
+
+/* inner wrapper that actually rotates */
+.stage-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .45s ease;
+  border-radius: inherit;
+}
+
+/* front/back faces */
+.stage-card__face {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* FRONT: keep your image card look */
+.stage-card__face--front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* move your existing overlay gradient to the front face */
+.stage-card__face--front::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.35), rgba(0,0,0,0));
+  pointer-events: none;
+}
+
+/* label stays on the front */
+.stage-card__label {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: .25rem .55rem;
+  border-radius: 6px;
+  font-weight: 700;
+  color: antiquewhite;
+  background: rgba(202, 135, 123, 0.82); /* fallback for color-mix */
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+
+/* BACK: definition side */
+.stage-card__face--back {
+  background: #fff;
+  color: var(--text);
+  transform: rotateY(180deg);
+  display: grid;
+  place-items: center;
+  padding: .9rem;
+  text-align: center;
+  box-shadow: inset 0 0 0 4px rgba(0,0,0,.04);
+}
+
+.stage-card__face--back h4 {
+  margin: 0 0 .35rem;
+  font-size: 1.05rem;
+}
+
+.stage-card__hint {
+  display: block;
+  margin-top: .35rem;
+  font-size: .9rem;
+  opacity: .75;
+}
+
+/* When flipped */
+.stage-card--flip.is-flipped .stage-card__inner {
+  transform: rotateY(180deg);
+}
+
+/* Keep your nice hover scale on the IMAGE only (front). Optional. */
+.stage-card--flip:hover .stage-card__face--front img,
+.stage-card--flip:focus-visible .stage-card__face--front img {
+  transform: scale(1.03);
+  transition: transform .25s ease;
+}
+
+/* Make the whole card act like a button but keep layout */
+.stage-card--flip {
+  border: 2px solid transparent;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .15s ease;
+}
+.stage-card--flip:focus-visible {
+  outline: none;
+  border-color: var(--nav-hover-bg);
+}
+
+
+
+
+
+.stage-card--image.is-correct {
+  border-color: var(--ok);
+  /* shadow ring (with fallback if color-mix unsupported) */
+  box-shadow:
+    0 0 0 3px rgba(46,125,50,.25),
+    0 2px 10px rgba(0,0,0,.12);
+}
+
+.stage-card--image.is-wrong {
+  border-color: var(--no);
+  box-shadow:
+    0 0 0 3px rgba(198,40,40,.25),
+    0 2px 10px rgba(0,0,0,.12);
+}
+
+/* optional: dim non-selected after a pick (JS toggles .is-selected on the chosen one) */
+.js-quiz.has-picked .stage-card--image:not(.is-selected) {
+  opacity: .9;
+  filter: saturate(.9);
+}
+
+/* quiz controls */
+.quiz-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: .5rem;
+}
+.quiz-controls .quiz-reset {
+  padding: .35rem .7rem;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,.15);
+  background: #fff;
+  cursor: pointer;
+}
+.quiz-controls .quiz-reset:hover { background: #f7f7f7; }
+.quiz-feedback { margin: 0; font-weight: 600; }
+
+
+
+/* ---------- Flip cards (explore) ---------- */
+.sc-grid {} /* reuse your .stage-grid sizing */
+
+.sc-card { perspective: 1000px; }
+.sc-btn {
+  appearance: none; -webkit-appearance: none;
+  position: relative; width: 100%;
+  aspect-ratio: 4 / 4;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: var(--ui-radius);
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  background: #fff; cursor: pointer; padding: 0;
+}
+.sc-btn:focus-visible { outline: 1px solid rgba(255,255,255,.9); outline-offset: 2px; }
+
+.sc-inner { position: absolute; inset: 0; border-radius: inherit;
+  transform-style: preserve-3d;
+  transition: transform .6s cubic-bezier(.2,.7,.2,1);
+}
+.sc-btn.is-flipped .sc-inner { transform: rotateY(180deg); }
+
+.sc-face { position: absolute; inset: 0; border-radius: inherit; backface-visibility: hidden; overflow: hidden; display: grid; place-items: center; padding: .5rem; }
+.sc-front { background: #fff; }
+.sc-front img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sc-label {
+  position: absolute; left: 8px; bottom: 8px;
+  background: var(--nav-hover-bg); color: antiquewhite;
+  font-weight: 700; padding: .25rem .5rem; border-radius: 8px;
+}
+.sc-back { background: var(--nav-bg); color: antiquewhite; transform: rotateY(180deg); text-align: left; padding: .8rem; }
+.sc-back h4 { margin: 0 0 .35rem; font-size: 1.05rem; }
+.sc-back p { margin: 0; line-height: 1.45; }
+
+@media (prefers-reduced-motion: reduce) { .sc-inner { transition: none; } }
+
+/* ---------- Quiz cards ---------- */
+.quiz-prompt { margin: 0 0 .5rem; font-weight: 600; text-align: center; }
+.quiz-grid {} /* reuses .stage-grid layout */
+
+.quiz-card {
+  display: grid; place-items: center;
+  min-height: 110px; padding: .75rem;
+  border: 2px solid rgba(0,0,0,.08);
+  border-radius: var(--ui-radius);
+  background: #fff; color: var(--text);
+  font-weight: 700; cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .2s ease, background-color .2s ease;
+}
+.quiz-card:hover, .quiz-card:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+  outline: none;
+}
+
+:root { --ok:#2e7d32; --bad:#c0392b; }
+.quiz-card.is-correct { border-color: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 25%, transparent); }
+.quiz-card.is-wrong   { border-color: var(--bad); box-shadow: 0 0 0 3px color-mix(in srgb, var(--bad) 25%, transparent); }
+
+.quiz-actions { text-align: center; margin-top: .5rem; }
+.quiz-reset {
+  background: var(--nav-hover-bg); color: antiquewhite;
+  border: 0; border-radius: 6px; padding: .4rem .75rem; font-weight: 700; cursor: pointer;
+}
+.quiz-reset:hover, .quiz-reset:focus-visible { filter: brightness(1.05); outline: none; }
+.quiz-feedback { text-align: center; margin: .5rem 0 0; min-height: 1.2em; }
+
+
+
+
+.image-quiz__display {
+  max-width: clamp(280px, 62vw, 540px);
+  margin: 0 auto;
+  padding: 0 1rem;
+	background: transparent;
+	border: 0;
+	box-shadow: none;
+align-content: center;
+}
+
+.image-quiz__img {
+	display: block;
+  width: 360px;
+  height: auto;
+  max-height: 360px;         /* cap height so tall images don’t dominate */
+  object-fit: contain;       /* keep full image visible inside the box */
+  border-radius: var(--ui-radius);
+  box-shadow: 0 6px 16px rgba(0,0,0,.85);
+}
+
+.image-quiz__img.is-visible { opacity: 1; }
+.image-quiz__img.is-preview { opacity: .65; filter: none; }           /* hover preview */
+.image-quiz__img.is-correct { opacity: 1;   filter: none; }           /* correct */
+.image-quiz__img.is-wrong   { opacity: 1;   filter: grayscale(90%) brightness(.8); } /* wrong */
+.image-quiz__caption {
+  text-align: center; opacity: .85; font-size: .95rem; margin-top: .35rem;
+}
+
+/* small polish on picked buttons */
+.quiz-card.is-correct { border-color: var(--ok); }
+.quiz-card.is-wrong   { border-color: var(--no); }
+
+
+
+
+/* Quiz for goal game */
+/* Small pill that shows the stage name */
+.stage-pill {
+  display: inline-block;
+  margin: 0 auto .5rem;
+  padding: .2rem .6rem;
+  border-radius: 999px;
+  background: var(--nav-bg);
+  color: antiquewhite;
+  font-weight: 700;
+}
+
+/* Make text cards comfy */
+.text-quiz .quiz-card {
+  text-align: left;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+/* Nice paragraph spacing inside options */
+.text-quiz .quiz-card p { margin: 0; }
+
+/* Score line */
+.quiz-score { margin-left: .5rem; opacity: .85; font-weight: 600; }
+
+#tq-stage.stage-pill { display: table; margin: 0 auto .5rem; }
+
+
+
+
+
+/* === Module 3: DARN-CAT media cards === */
+.media-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto 1.25rem;
+  padding: 0 1rem;
+}
+
+.media-card {
+  background: #b19e9b;
+  color: var(--text);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: var(--ui-radius);
+  padding: 0.85rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  transition: transform .15s ease, box-shadow .15s ease;
+  text-align: center;
+}
+.media-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+}
+
+.media-card img {
+  display: block;
+  width: min(240px, 100%);
+  height: auto;
+  border-radius: var(--ui-radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,.10);
+  margin: 0 auto .5rem;
+}
+
+.media-title {
+  font-weight: 800;
+  margin: .25rem 0 .35rem;
+}
+
+.media-audio {
+  width: 100%;
+  max-width: 320px;   /* keeps controls tidy */
+  margin: .25rem auto 0;
+  display: block;
+}
+
+
+/* ===== MI steps accordion (final) ===== */
+
+/* Accordion container: same width as media cards, centered */
+.mi-steps-wrap {
+  max-width: 1100px;      /* matches your stage-grid container */
+  margin: 0 auto 1rem;    /* center + bottom spacing */
+  padding: 0 1rem;        /* same side padding as sections */
+}
+
+.mi-steps {
+  display: grid;
+  gap: 12px;              /* keep your spacing between items */
+}
+
+/* one item */
+.mi-step {
+  border-radius: var(--ui-radius);
+  overflow: hidden;
+  border: 1.2px solid rgba(0,0,0,.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  background: #fff;
+}
+
+/* title bar */
+.mi-step > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 07px 10px;
+  background: var(--nav-bg);
+  color: #fff;
+  font-weight: 800;
+  font-size: 185%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+	gap: 10px;
+}
+
+
+.mi-step > summary::-webkit-details-marker { display: none; }
+.mi-step > summary:hover,
+.mi-step > summary:focus-visible {
+  background: var(--nav-hover-bg);
+  outline: none;
+}
+
+.mi-summary {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+  flex-wrap: wrap;
+  line-height: 1.1;
+}
+.mi-summary-title { font-weight: 800; } /* inherits the big size */
+.mi-summary-sub {/* the “small title” / tagline */
+  font-weight: 600;
+  opacity: .95; /* readable but smaller than the main line */
+  font-size: clamp(.9rem, .45vw + .6rem, 1.05rem);
+  color: antiquewhite; /* matches your summary text color */
+}
+
+
+
+
+
+/* keep your chevron behavior as-is */
+.mi-step > summary::after {
+  content: "▾";
+  font-size: .9em;
+  margin-left: auto;             /* stay all the way to the right */
+  transition: transform .2s ease;
+}
+.mi-step[open] > summary::after { transform: rotate(180deg); }
+
+
+
+
+
+
+
+
+/* caret */
+.mi-step > summary::after {
+  content: "▾";
+  font-size: .9em;
+  margin-left: 10px;
+  transition: transform .2s ease;
+}
+.mi-step[open] > summary::after { transform: rotate(180deg); }
+
+/* revealed panel */
+.mi-step__content {
+  background: #fff;
+  border-top: 4px solid var(--grey);
+  padding: 1px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  color: var(--text);
+}
+
+/* two columns */
+.mi-step__voice {
+  width: 62%;
+  padding: .3px;
+  line-height: 1.1;
+  font-size: 104%;
+}
+.mi-step__bullets {
+  width: 33%;
+  padding: .2px;
+	padding-top: 5px;
+}
+.mi-step__bullets ul { margin: 0; padding-left: .9rem; }
+.mi-step__bullets li { margin: .0rem 0; }
+.mi-step__bullets li::marker { color: var(--grey); }
+
+@media (max-width: 760px) {
+  .mi-step__voice,
+  .mi-step__bullets { width: 100%; }
+}
+
+/* subtle open-state outline */
+.mi-step[open] { outline: 2px solid rgba(0,0,0,.04); outline-offset: -2px; }
+
+
+
+/* ===== Static (always open) module previews ===== */
+/* make the card look like an opened accordion */
+.mi-step--static {
+  border-radius: var(--ui-radius);
+  overflow: hidden;
+  border: 1.2px solid rgba(0,0,0,.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  background: #fff;
+}
+
+/* title bar (replaces the <summary/> look) */
+.mi-step--static .mi-step__title {
+  background: var(--nav-bg);
+  color: #444;
+  font-weight: 800;
+	font-size: 205%;
+  font-size: clamp(1.15rem, 1.2vw + .4rem, 1.6rem);
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mi-step--static .mi-step__title small {
+  font-weight: 600;
+  opacity: .95;
+}
+
+/* two-column content: image left, text right */
+.mi-step--static .mi-step__content {
+  border-top: 4px solid var(--grey, #b19e9b);
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;   /* 45/55-ish */
+  gap: 12px;
+  color: var(--text);
+}
+
+/* media column */
+.mi-media {
+  margin: 0;
+}
+.mi-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--ui-radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+/* text column */
+.mi-desc { line-height: 1.4; }
+.mi-desc p { margin: 0 0 .6rem; }
+
+/* CTA aligns nicely under text */
+.mi-desc .cta {
+  display: inline-block;
+  margin-top: .25rem;
+}
+
+/* responsive: stack on narrow screens */
+@media (max-width: 760px) {
+  .mi-step--static .mi-step__content {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
 /* Thin banner under the nav on content pages */
 .room-strip {
   width: 100%;
@@ -603,10 +1193,51 @@ a.cta:focus-visible {
 }
 
 /* Optional: a little breathing room before content */
-main { padding-top: 0.75rem; }
+main { padding-top: 0.75rem;
+max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;}
 
 
 
+
+
+
+
+
+
+/* ========= VIDEO ========= */
+/* ========= VIDEO ========= */
+/* ========= VIDEO ========= */
+
+
+.video-wrap {
+  max-width: 700px;            /* or 500px if you want it smaller */
+  margin: 0 auto 1rem;
+  padding: 0 1rem;             /* side breathing room on mobile */
+}
+
+.video {
+  width: 100%;
+  height: auto;
+  border-radius: var(--ui-radius);
+  box-shadow: 0 6px 16px rgba(0,0,0,.12);
+}
+
+.video-caption {
+  text-align: center;
+  opacity: .85;
+  font-size: .95rem;
+  margin-top: .35rem;
+}
+
+
+
+
+
+
+/* ========= FOOTER ========= */
+/* ========= FOOTER ========= */
 /* ========= FOOTER ========= */
 
 .site-footer {

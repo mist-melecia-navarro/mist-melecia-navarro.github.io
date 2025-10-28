@@ -10,6 +10,7 @@
 		  <meta name="viewport" content="width=device-width, initial-scale=1" />
 		  <title>Overview - Therapy Crash Course</title>
 			<meta name="author" content="Melecia Navarro, MSW">
+	<meta name="description" content="Overview of the Therapy Crash Course modules with static previews and quick links to Module 1–4, Forms, and End Credits."/>
 			
 <!--  ========= FONTS - SHRIKHAND ========= -->
 			<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,6 +30,8 @@
 	
 	
 	
+	
+	
 <!--  ========= BODY - BODY - BODY ========= -->
 <!--  ========= BODY - BODY - BODY ========= -->
 <!--  ========= BODY - BODY - BODY ========= -->
@@ -36,59 +39,80 @@
 	
 <body>
 	
-	<a class="sr-only" href="#home">Skip to main content</a>
+	
+	<!--  ========= BANNER ========= -->
+	<!--  ========= BANNER ========= -->
+	<!--  ========= BANNER ========= -->
+	
+	
+	<a class="sr-only" href="#content">Skip to main content</a>
 	
 	<!--  ========= HEADER - BANNER ABOVE NAV - HEADER ========= -->
 	<!--  ========= HEADER - BANNER ABOVE NAV - HEADER ========= -->
 		<header>
-		  <div class="room-strip" aria-hidden="true">
-			<img src="img/headertherapycrashcourse.jpg" alt="">
-		  </div>
+ <div class="room-strip" aria-hidden="true">
+    <img src="img/headertherapycrashcourse.jpg" alt="" width="1920" height="420" decoding="async">
+  </div>
 		</header>
+	<!--  ========= BANNER ========= -->
+	
+	
+	
 	
 
-<!--  ========= NAV - STICKY NAV- SAME ON EVERY PAGE ==== -->
-<!--  ========= NAV - STICKY NAV- SAME ON EVERY PAGE ==== -->
-	<nav class="top-nav" aria-label="Primary">
-	  <ul>
+
+<!--  ========= NAVIGATION - STICKY NAV- SAME ON EVERY PAGE ==== -->
+<!--  ========= NAVIGATION - STICKY NAV- SAME ON EVERY PAGE ==== -->
+<!--  ========= NAVIGATION - STICKY NAV- SAME ON EVERY PAGE ==== -->
+	
+	
+			<nav class="top-nav" aria-label="Primary">
+			  <ul>
+			<!--  ========= NAV - SUBMENU NAV - NAV ========= -->
+
+				<!-- WELCOME with subnav -->
+
+			 <li class="has-submenu">
+			  <a href="home.html#content" aria-haspopup="true" aria-expanded="false" aria-controls="subnav-welcome">Welcome</a>
+
+			 <div class="subnav subnav--left" id="subnav-welcome" aria-label="Welcome options">
+
+				   <!-- full-width popup strip under the nav -->
+							<a href="index.html" >Restart (Landing)</a>
+							<a href="home.html" >Welcome Letter</a>
+			  </div>
+			</li> 
+	  
+		  		  
 	<!--  ========= NAV - SUBMENU NAV - NAV ========= -->
-		  
-		<!-- WELCOME with subnav -->
-		  
-	 <li class="has-submenu">
-	  <a href="home.html#home" aria-haspopup="true">Welcome</a>
-		 
-	  <div class="subnav subnav--left" role="menu" aria-label="Welcome options">
-		  
-		   <!-- full-width popup strip under the nav -->
-					<a href="index.html" role="menuitem">Restart (Landing)</a>
-					<a href="home.html#home" role="menuitem">Welcome Letter</a>
-	  </div>
-	</li> 
-	  
-<!--  ========= NAV - SUBMENU NAV - NAV ========= -->
-		  
-	  <!-- OVERVIEW / MODULES with subnav -->
-		  
-		  <li class="has-submenu">
-  <a href="main.html#overview" aria-haspopup="true">Overview / Modules</a>
-			  
-  <div class="subnav" role="menu" aria-label="Modules">
-	  
-	 <!-- full-width popup strip under the nav -->
-    <a href="main.html#overview" role="menuitem" data-note="Start here">Overview</a>
-    <a href="module1.html" role="menuitem" data-note="Module 1: Therapy & Therapist">What is Therapy, Anyway?</a>
-    <a href="module2.html" role="menuitem" data-note="Module 2: Stages of Change">Where Shall We Begin?</a>
-    <a href="module3.html" role="menuitem" data-note="Module 3: Motivational Interviewing">What Do I Say?</a>
-    <a href="module4.html" role="menuitem" data-note="Module 4: Goal Setting">Now What?</a>
-    </div>
- </li>
+	<!-- OVERVIEW / MODULES with subnav -->
 
-    <li><a href="forms.html">Forms</a></li>
-    <li><a href="endcredits.html">End Credits</a></li>
-  </ul>
-</nav>
+		  
+				  <li class="has-submenu">
+		  <a href="main.html#overview" aria-haspopup="true" aria-expanded="false">Overview / Modules</a>
 
+		  <div class="subnav" aria-label="Modules">
+
+			 <!-- full-width popup strip under the nav -->
+			<a href="main.html#overview"  data-note="Start here">Overview</a>
+			<a href="module1.html"  data-note="Module 1: Therapy & Therapist">What is Therapy, Anyway?</a>
+			<a href="module2.html"  data-note="Module 2: Stages of Change">Where Shall We Begin?</a>
+			<a href="module3.html"  data-note="Module 3: Motivational Interviewing">What Do I Say?</a>
+			<a href="module4.html"  data-note="Module 4: Goal Setting">Now What?</a>
+			</div>
+		 </li>
+
+			<li><a href="forms.html">Forms</a></li>
+			<li><a href="endcredits.html">End Credits</a></li>
+		  </ul>
+		</nav>
+
+
+	
+<!--  ========= NAVIGATION END ==== -->
+<!--  ========= NAVIGATION END ==== -->
+<!--  ========= NAVIGATION END ==== -->
+	
 
 	
 	
@@ -98,13 +122,15 @@
 	
 	
 	
-<div class="container">
-	
-  <main>
+<main id="content">
 	
 	  
-	   <!--  ========= TITLE AT THE TOP ========= -->	
-	    <section id="home" aria-label="Home">
+	
+<!--  ========= TITLE AT THE TOP ========= -->	
+<!--  =========   TITLE STACK   ========= -->	
+<!--  ========= TITLE AT THE TOP ========= -->	
+	
+<section id="overview-top" aria-label="Overview intro">
 		<div class="title-stack">
 			 <!--  ========= PRETITLE IN ALL CAPS ========= -->
 		  <span class="pretitle">LET'S REVIEW THE</span>
@@ -112,66 +138,148 @@
   <h1>MODULES DESCRIPTIONS</h1>
 	</div>
 			<!--  ========= Subtitle in Title Case ========= -->
-      <h3>Course Modules Hub</h3>
+      <h2>Course Modules Hub</h2>
 
 <!--  ========= Small Description Preview to the Page/ Directions  ========= -->	  
 <p style="text-align:center; max-width: 60ch; margin: 0.5rem auto 1.2rem;"> Start here for a high-level orientation. Then open the module you need from the menu above. </p>
-
- <!--  ====== PAGE HEADER / DIVIDER / IMAGE AT TOP===== -->	
-	  
- <!--  ========= PAGE HEADER ========= -->
-	  <div class="section-hero section-hero--overview" aria-hidden="false"> 
+	
+<!--  ========= TITLE STACK END ========= -->	
+	
+	
+	
+	
+ <!--  =========  IMAGE AT TOP ======== -->	  
+<!--  ====  OR PAGE HEADER / DIVIDER ==== -->
+<!--  =========  IMAGE AT TOP ======== -->	
+	  <div class="section-hero section-hero--overview" > 
 </div>
 	  
 
 	  
-<!-- Full-width divider -->
-<div class="divider divider--full" aria-hidden="true">5</div>
+
 	  
     <!--  ========= OVERVIEW DESCRIPTION ========= -->
 	  
 	  
-	<section id="overview" aria-label="Overview">
-		  <h2>Overview</h2>
-		  <p>(Add your overview text here.)</p>
-		</section>
-	  
-	  <div class="divider--full">
-  <div class="divider__label"><a href="#overview">Jump to Overview</a></div>
+<section id="overview" aria-label="Modules overview">
+			
+<!--  ========= CONTENT========= -->
+	
+	
+<!--  ========= DIVIDER ========= -->
+<!--  ========= MODULES DESCRIPTION ========= -->
+<!--  ========= DIVIDER ========= -->
+	
+<div class="divider--full">
+  <div class="divider__label"><a href="#overview">Modules Description</a></div>
+</div>		
+	
+	<!--  ========= MODULES- OPEN CARDS ========= -->
+			
+
+	<div class="mi-steps-wrap">
+		  <div class="mi-steps">
+
+			<!-- Module 1 -->
+			<article class="mi-step mi-step--static">
+			  <div class="mi-step__title">
+				<span>M1: What is Therapy, Anyway?</span>
+				<small>THERAPY &amp; THERAPISTS</small>
+			  </div>
+			  <div class="mi-step__content">
+				<figure class="mi-media">
+				  <img src="img/headertherapyandtherapists.jpg" alt="Header Pic for Module 1" width="800" height="500" loading="lazy" decoding="async">
+				</figure>
+				<div class="mi-desc">
+				  <p>Research keeps reminding us that you—the person of the therapist—matter a lot. Decades of work show that the early working alliance—shared goals, shared tasks, and a real bond—predicts outcomes across approaches; and even a single session or the first few hours can create durable relief. Clients’ confidence in you and in the treatment plan often moves with their week‑to‑week progress.</p>
+
+				  <a class="cta" href="module1.html">Open Module 1</a>
+				</div>
+			  </div>
+			</article>
+
+    <!-- Module 2 -->
+			<article class="mi-step mi-step--static">
+			  <div class="mi-step__title">
+				<span>M2: Where Shall We Begin?</span>
+				<small>STAGES OF CHANGE</small>
+			  </div>
+			  <div class="mi-step__content">
+				<figure class="mi-media">
+				  <img src="img/headerstagesofchange.jpg" alt="Header pic Module 2" width="800" height="500" loading="lazy" decoding="async">
+				</figure>
+				<div class="mi-desc">
+				  <p>The classic social work phrase of "meeting them where they are at" applies here! We've all been in a journey of change at some point, and without the right starting point, we are just hoping for the best! Ensure the greatest chance of success by identifying where the client is in the stages of change. Alignment is key in what goal is selected and the corresponding treatment plan. You'll feel a sense of transcendence when you can recognize the stages in clients! </p>
+
+				  <a class="cta" href="module2.html">Open Module 2</a>
+				</div>
+			  </div>
+			</article>
+
+    <!-- Module 3 -->
+			<article class="mi-step mi-step--static">
+			  <div class="mi-step__title">
+				<span>M3: What Do I Say?</span>
+				<small>Motivational Interviewing — Draw out their own reasons to change.</small>
+			  </div>
+			  <div class="mi-step__content">
+				<figure class="mi-media">
+				  <img src="img/headermotivationalinterviewing.jpg" alt="Header pic for Module 3" width="800" height="500" loading="lazy" decoding="async">
+				</figure>
+				<div class="mi-desc">
+				  <p>"Don't take all the good lines." Traditional approaches tend to center the practitioner as the advocate for change. It feels like you are pulling out all the tricks to convince the client with arguments for why and how. Module 3 helps answer that question of what is to be said in the therapy session, and in fact, it isn't about what we say but how we draw out the client's own motivations.</p>
+				  <a class="cta" href="module3.html">Open Module 3</a>
+				</div>
+			  </div>
+			</article>
+
+    <!-- Module 4 -->
+			<article class="mi-step mi-step--static">
+			  <div class="mi-step__title">
+				<span>M4: Now What?</span>
+				<small>Collaborative Goal Setting — Turn motivation into doable next steps.</small>
+			  </div>
+			  <div class="mi-step__content">
+				<figure class="mi-media">
+				  <img src="img/headergoalsetting.jpg" alt="Header pic for Module 4" width="800" height="500" loading="lazy" decoding="async">
+				</figure>
+				<div class="mi-desc">
+				  <p>&nbsp;It all comes back to the goal! Creating a goal in therapy is an art, it is a fluid mix of structure and flexibility. And when things get tough, your colleagues will always remind you, "what is your goal?" A goal is the center of the work, where the beginning phases lead to and where we strive to get to. Make it collaborative with the client!&nbsp;Shrink the gap between wanting and doing. Co-create a plan that removes barriers, builds skills, and taps outside supports.</p>
+				  <a class="cta" href="module4.html">Open Module 4</a>
+				</div>
+			  </div>
+			</article>
+
+  </div>
 </div>
-	  
-	<!--  ========= MODULES ========= -->
-				<section id="mod-whatistherapy" aria-label="What is Therapy, Anyway?">
-				  <h2>What is Therapy, Anyway?</h2>
-				  <p>(Module content placeholder.)</p>
-				</section>
-				<section id="mod-wherebegin" aria-label="Where Shall We Begin?">
-				  <h2>Where Shall We Begin?</h2>
-				  <p>(Module content placeholder.)</p>
-				</section>
-				<section id="mod-whatsay" aria-label="What Do I Say?">
-				  <h2>What Do I Say?</h2>
-				  <p>(Module content placeholder.)</p>
-				</section>
-				<section id="mod-nowwhat" aria-label="Now What?">
-				  <h2>Now What?</h2>
-				  <p>(Module content placeholder.)</p>
+			
+			
+			
+<!--  ========= DIVIDER ========= -->
+<!--  ========= OTHER PAGES ========= -->
+<!--  ========= DIVIDER ========= -->		
+	
+		<div class="divider--full">
+		  <div class="divider__label"><a href="#overview">Other Pages</a></div>
+		</div>		
+			<!--  ========= FORMS ========= -->
+				<section id="forms" aria-label="Forms"><h2>Forms</h2><p>Forms are embedded in the module section but are also stored here. These are document, templates, and .pdfs that you can use for your therapy internships.</p>   <a class="cta" href="forms.html">Go to Forms</a>
 				</section>
 
-	<!--  ========= FORMS ========= -->
-		<section id="forms" aria-label="Forms"><h2>Forms</h2><p>(Add forms here.)</p></section>
-
-	<!--  ========= PLACEHOLDER ========= -->
-		<section id="placeholder" aria-label="Placeholder">
-		  <h2>Placeholder</h2>
-		  <p>(Add your content here.)</p>
-		</section>
+			<!--  ========= PLACEHOLDER ========= -->
+				<section id="endcredits" aria-label="endcredits">
+				  <h2>End Credits</h2>
+				  <p>Find references, appreciations, and contact information. Get in contact with the designer or find out upcoming projects.</p>    
+				  <a class="cta" href="endcredits.html">Go to End Credits</a>
+				</section>
 
 
 
   </main>
 		
 		
+		  <!-- ========= FOOTER ========= -->
+		  <!--  ========= FOOTER ========= --><!-- ========= FOOTER ========= -->
 		  <!--  ========= FOOTER ========= -->
 
 <footer class="site-footer" role="contentinfo">
@@ -179,21 +287,24 @@
     <div class="footer-brand">Therapy Crash Course</div>
 
     <nav class="footer-nav" aria-label="Footer">
-      <a href="#home">Home</a>
-      <a href="#overview">Overview</a>
-      <a href="#forms">Forms</a>
-      <a href="#placeholder">Placeholder</a>
+  <a href="home.html#content">Welcome</a>
+  <a href="main.html#overview">Overview</a>
+  <a href="forms.html#content">Forms</a>
+  <a href="endcredits.html#content">End Credits</a>
     </nav>
 
-    <a href="#home" class="back-to-top" aria-label="Back to Top">↑ Back to Top</a>
+    <a href="#content" class="back-to-top" aria-label="Back to Top">↑ Back to Top</a>
   </div>
 
   <div class="footer-bottom">
     <small>© <span id="year"></span> Therapy Crash Course · <span class="byline">Melecia Navarro, MSW</span></small>
   </div>
 </footer>
+<!-- ========= FOOTER ========= -->
+		  <!--  ========= FOOTER ========= --><!-- ========= FOOTER ========= -->
+		  <!--  ========= FOOTER ========= -->
 
-  </div>
+
 </body>
 	
 	
