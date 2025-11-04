@@ -1210,6 +1210,43 @@ align-content: center;
 }
 
 
+
+/* default spacing stays as-is for cards WITH images */
+.media-card:has(img) {
+  padding: 0.85rem;
+}
+
+/* compact spacing when there's NO image */
+.media-card:not(:has(img)) {
+  padding: 0.6rem 0.7rem;          /* tighter padding */
+  line-height: 1.3;                /* slightly tighter lines */
+}
+
+.media-card:not(:has(img)) .media-title {
+  margin: .15rem 0 .25rem;         /* smaller title margin */
+  font-size: 1rem;                  /* optional: slightly smaller title */
+}
+
+.media-card:not(:has(img)) p {
+  margin: 0 0 .35rem;              /* reduce paragraph spacing */
+}
+
+.media-card:not(:has(img)) .media-audio {
+  margin-top: .2rem;               /* pull audio up */
+  max-width: 100%;
+}
+
+
+/* same compact rules but via class */
+.media-card--compact {
+  padding: 0.6rem 0.7rem;
+  line-height: 1.3;
+}
+.media-card--compact .media-title { margin: .15rem 0 .25rem; font-size: 1rem; }
+.media-card--compact p { margin: 0 0 .35rem; }
+.media-card--compact .media-audio { margin-top: .2rem; }
+
+
 /* ===== MI steps accordion (final) ===== */
 
 /* Accordion container: same width as media cards, centered */
